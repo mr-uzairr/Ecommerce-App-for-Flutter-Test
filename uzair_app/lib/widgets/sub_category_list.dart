@@ -1,0 +1,135 @@
+import 'package:flutter/material.dart';
+
+class SubCategoryList extends StatelessWidget {
+  final List<dynamic> subCategories;
+  final int selectedIndex;
+  final Function(int)? onSubCategoryTap;
+
+  const SubCategoryList({
+    super.key,
+    required this.subCategories,
+    this.selectedIndex = 0,
+    this.onSubCategoryTap,
+  });
+
+  int getSubCategoryTotalQuantity(Map<String, dynamic> subCat) {
+    if (subCat['products'] == null) return 0;
+    return (subCat['products'] as List).fold<int>(
+      0,
+      (sum, product) => sum + (product['quantity'] as int? ?? 0),
+    );
+  }
+
+  String fixImageUrl(String url) {
+    return url.replaceAll(
+      "https://github.com/Mudassar1999/TPFlutterTest/blob/main",
+      "https://raw.githubusercontent.com/Mudassar1999/TPFlutterTest/main",
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return subCategories.isEmpty
+        ? const Center(child: Text("No subcategories"))
+        : SizedBox(
+            height: 120,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: subCategories.length,
+              padding: EdgeInsets.zero,
+              itemBuilder: (context, index) {
+                final subCat = subCategories[index];
+                final totalQty = getSubCategoryTotalQuantity(subCat);
+
+                return Padding(
+                  padding: EdgeInsets.only(
+                    left: index == 0 ? 0.0 : 2.0,
+                    right: 2.0,
+                    top: 20.0,
+                    bottom: 8.0,
+                  ),
+                  child: GestureDetector(
+                    onTap: () {
+                      if (onSubCategoryTap != null) {
+                        onSubCategoryTap!(index);
+                      }
+                    },
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          width: 56.2,
+                          height: 56.2,
+                          child: Stack(
+                            clipBehavior: Clip.none,
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: selectedIndex == index
+                                        ? Colors.red
+                                        : Colors.grey,
+                                    width: 2,
+                                  ),
+                                  color: Colors.white,
+                                ),
+                                alignment: Alignment.center,
+                                child: ClipOval(
+                                  child: Image.network(
+                                    fixImageUrl(subCat['image']),
+                                    width: 50,
+                                    height: 50,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              if (totalQty > 0)
+                                Positioned(
+                                  top: 4.0,
+                                  left: 42.12,
+                                  child: Container(
+                                    width: 14.0,
+                                    height: 14.0,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      border: Border.all(
+                                        color: selectedIndex == index
+                                            ? Colors.red
+                                            : Colors.grey,
+                                        width: 2,
+                                      ),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Text(
+                                      '$totalQty',
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 5,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+                        SizedBox(
+                          width: 70,
+                          child: Text(
+                            subCat['name'] ?? '',
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(fontSize: 12),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          );
+  }
+}
