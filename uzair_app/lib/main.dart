@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart'; 
+import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'views/home_page.dart';
 
 void main() {
@@ -11,10 +12,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp( 
-      debugShowCheckedModeBanner: false,
-      title: 'Online Shop',
-      home: const HomePage(),
+    return ScreenUtilInit(
+      designSize: const Size(360, 800),    
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) {
+        return GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Online Shop',
+          theme: ThemeData(
+            scaffoldBackgroundColor: const Color(0xFFFFFCFC),
+          ),
+          home: const HomePage(),
+        );
+      },
     );
   }
 }

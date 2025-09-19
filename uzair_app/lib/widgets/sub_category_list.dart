@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../models/sub_category.dart';
 import '../controllers/sub_category_controller.dart';
@@ -12,7 +13,8 @@ class SubCategoryList extends StatelessWidget {
     super.key,
     required this.subCategories,
     this.selectedIndex = 0,
-    this.onSubCategoryTap, required int Function(SubCategory subCat) getSubCategoryTotalQuantity,
+    this.onSubCategoryTap,
+    required int Function(SubCategory subCat) getSubCategoryTotalQuantity,
   });
 
   String fixImageUrl(String url) {
@@ -29,19 +31,21 @@ class SubCategoryList extends StatelessWidget {
     return subCategories.isEmpty
         ? const Center(child: Text("No subcategories"))
         : SizedBox(
-            height: 120,
+            width: 325.w,
+            height: 105.h,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: subCategories.length,
               padding: EdgeInsets.zero,
               itemBuilder: (context, index) {
                 final subCat = subCategories[index];
-                final totalQty = subCategoryController.getSubCategoryTotalQuantity(subCat);
+                final totalQty = subCategoryController
+                    .getSubCategoryTotalQuantity(subCat);
 
                 return Padding(
                   padding: EdgeInsets.only(
-                    left: index == 0 ? 0.0 : 3.0,
-                    right: 3.0,
+                    left: index == 0 ? 0.0 : 1.0,
+                    right: 1.0,
                     top: 20.0,
                     bottom: 8.0,
                   ),
@@ -54,8 +58,8 @@ class SubCategoryList extends StatelessWidget {
                     child: Column(
                       children: [
                         SizedBox(
-                          width: 56.2,
-                          height: 56.2,
+                          width: 50.47.w,
+                          height: 50.47.h,
                           child: Stack(
                             clipBehavior: Clip.none,
                             children: [
@@ -65,8 +69,8 @@ class SubCategoryList extends StatelessWidget {
                                   border: Border.all(
                                     color: selectedIndex == index
                                         ? Colors.red
-                                        : Colors.grey,
-                                    width: 2,
+                                        : Color(0xFF98A6AB),
+                                         width: 1.5.w,
                                   ),
                                   color: Colors.white,
                                 ),
@@ -74,36 +78,43 @@ class SubCategoryList extends StatelessWidget {
                                 child: ClipOval(
                                   child: Image.network(
                                     fixImageUrl(subCat.image),
-                                    width: 50,
-                                    height: 50,
+                                    width: 45.w,
+                                    height: 45.h,
                                     fit: BoxFit.cover,
                                   ),
                                 ),
                               ),
                               if (totalQty > 0)
                                 Positioned(
-                                  top: 4.0,
-                                  left: 42.12,
-                                  child: Container(
-                                    width: 14.0,
-                                    height: 14.0,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      border: Border.all(
-                                        color: selectedIndex == index
-                                            ? Colors.red
-                                            : Colors.grey,
-                                        width: 2,
-                                      ),
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Text(
-                                      '$totalQty',
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 5,
-                                        fontWeight: FontWeight.bold,
+                                  left: 35.w,
+                                  child: Opacity(
+                                    opacity: 1,
+                                    child: Transform.rotate(
+                                      angle: 0,
+                                      child: Container(
+                                        width: 14.w,
+                                        height: 14.h,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          border: Border.all(
+                                            color: selectedIndex == index
+                                                ? Colors.red
+                                                : const Color(0xFF98A6AB),
+                                            width: 1.5.w,
+                                          ),
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Text(
+                                          '$totalQty',
+                                          style: TextStyle(
+                                            color: selectedIndex == index
+                                                ? Colors.black
+                                                : const Color(0xFF98A6AB),
+                                            fontSize: 5.sp,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -118,7 +129,16 @@ class SubCategoryList extends StatelessWidget {
                             subCat.name,
                             textAlign: TextAlign.center,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(fontSize: 12),
+                            style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontWeight: selectedIndex == index
+                                  ? FontWeight.w400
+                                  : FontWeight.normal,
+                              fontSize: 11.sp,
+                              height: 1.0,
+                              letterSpacing: 0,
+                              color: const Color(0xFF89999F),
+                            ),
                           ),
                         ),
                       ],
