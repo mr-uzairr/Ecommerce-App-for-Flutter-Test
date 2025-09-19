@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../models/product.dart';
+import '../controllers/product_controller.dart';
 
 String fixImageUrl(String url) {
   return url.replaceAll(
@@ -7,36 +10,59 @@ String fixImageUrl(String url) {
   );
 }
 
-class Product {
-  final int id;
-  final String name;
-  final String category;
-  final double price;
-  final double? discountPercentage;
-  final String? image;
-  final bool status;
+class ProductList extends StatelessWidget {
+  final String selectedSubCategory;
+  final List<Product> products;
 
-  Product({
-    required this.id,
-    required this.name,
-    required this.category,
-    required this.price,
-    this.discountPercentage,
-    this.image,
-    required this.status,
-  });
+  const ProductList({
+    Key? key,
+    required this.selectedSubCategory,
+    required this.products,
+  }) : super(key: key);
 
-  factory Product.fromJson(Map<String, dynamic> json, {String category = ""}) {
-    return Product(
-      id: json['id'] ?? 0,
-      name: json['name'] ?? '',
-      category: category,
-      price: (json['price'] ?? 0.0).toDouble(),
-      discountPercentage: json['discountPercentage'] != null
-          ? (json['discountPercentage'] as num).toDouble()
-          : null,
-      image: json['image'],
-      status: json['status'] ?? true,
+  @override
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
+          child: Row(
+            children: [
+              Text(
+                "Products",
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22,
+                  color: Colors.black,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 13), 
+                child: Text(
+                  " ($selectedSubCategory)",
+                  style: const TextStyle(
+                    color: Colors.red,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 10,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: 320,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: products.length,
+            itemBuilder: (context, index) {
+              return ProductCard(product: products[index]);
+            },
+          ),
+        ),
+      ],
     );
   }
 }
@@ -48,24 +74,20 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final discountedPrice =
-        (product.discountPercentage != null && product.discountPercentage! > 0)
-        ? product.price * (1 - product.discountPercentage! / 100)
-        : product.price;
+    final productController = Get.find<ProductController>();
+    final discountedPrice = productController.getDiscountedPrice(product);
 
     return Container(
       width: 190,
       margin: const EdgeInsets.only(right: 16.0),
-     
       child: Stack(
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-             
               Container(
                 width: double.infinity,
-                height: 210, 
+                height: 200,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
                   color: Colors.grey[100],
@@ -93,15 +115,16 @@ class ProductCard extends StatelessWidget {
                       : const Icon(Icons.image, size: 50, color: Colors.grey),
                 ),
               ),
-              const SizedBox(height: 8), 
+              const SizedBox(height: 8),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Text(
-                  product.category.isNotEmpty ? product.category : "Category",
-                  style: TextStyle(
+                  product.name,
+                  style: const TextStyle(
                     fontFamily: "Montserrat",
-                    fontSize: 13,
-                    color: Colors.grey[600],
+                    fontSize: 16,
+                    
+                     color: Colors.grey,
                   ),
                 ),
               ),
@@ -134,27 +157,27 @@ class ProductCard extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(height: 8), 
+              const SizedBox(height: 6),
               if (!product.status)
                 Center(
                   child: Container(
                     width: double.infinity,
-                    height: 18,
+                    height: 16,
                     margin: const EdgeInsets.symmetric(
-                      horizontal:5,
-                      vertical: 4,
+                      horizontal: 5,
+                      vertical: 2,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.yellow,
+                      color: const Color(0x4DFFCD03),
                       borderRadius: BorderRadius.circular(50),
                     ),
                     alignment: Alignment.center,
                     child: Container(
-                      width: 150,
-                      height: 20,
+                      width: 140,
+                      height: 14,
                       margin: const EdgeInsets.all(2),
                       decoration: BoxDecoration(
-                        color: Colors.amber,
+                        color: const Color(0xFFFFC107),
                         borderRadius: BorderRadius.circular(50),
                       ),
                       alignment: Alignment.center,
@@ -162,7 +185,7 @@ class ProductCard extends StatelessWidget {
                         "sold out",
                         style: TextStyle(
                           fontFamily: "Montserrat",
-                          fontSize: 10,
+                          fontSize: 9,
                           fontWeight: FontWeight.w600,
                           color: Colors.red,
                         ),
@@ -170,7 +193,6 @@ class ProductCard extends StatelessWidget {
                     ),
                   ),
                 ),
-              
             ],
           ),
           if (product.discountPercentage != null &&
@@ -183,7 +205,7 @@ class ProductCard extends StatelessWidget {
                 height: 20,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: Colors.green,
+                  color: const Color(0xFF28A745),
                   borderRadius: BorderRadius.circular(2),
                 ),
                 child: Text(
@@ -199,61 +221,6 @@ class ProductCard extends StatelessWidget {
             ),
         ],
       ),
-    );
-  }
-}class ProductList extends StatelessWidget {
-  final String selectedSubCategory;
-  final List<Product> products;
-
-  const ProductList({
-    Key? key,
-    required this.selectedSubCategory,
-    required this.products,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 16.0),
-          child: RichText(
-            text: TextSpan(
-              children: [
-                const TextSpan(
-                  text: "Products ",
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-                TextSpan(
-                  text: "($selectedSubCategory)",
-                  style: const TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.red,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        SizedBox(
-          height: 320,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            padding: EdgeInsets.zero,
-            itemCount: products.length,
-            itemBuilder: (context, index) {
-              final product = products[index];
-              return ProductCard(product: product);
-            },
-          ),
-        ),
-      ],
     );
   }
 }

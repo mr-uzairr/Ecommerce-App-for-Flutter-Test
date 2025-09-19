@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../models/sub_category.dart';
+import '../controllers/sub_category_controller.dart';
 
 class SubCategoryList extends StatelessWidget {
-  final List<dynamic> subCategories;
+  final List<SubCategory> subCategories;
   final int selectedIndex;
   final Function(int)? onSubCategoryTap;
 
@@ -9,16 +12,8 @@ class SubCategoryList extends StatelessWidget {
     super.key,
     required this.subCategories,
     this.selectedIndex = 0,
-    this.onSubCategoryTap,
+    this.onSubCategoryTap, required int Function(SubCategory subCat) getSubCategoryTotalQuantity,
   });
-
-  int getSubCategoryTotalQuantity(Map<String, dynamic> subCat) {
-    if (subCat['products'] == null) return 0;
-    return (subCat['products'] as List).fold<int>(
-      0,
-      (sum, product) => sum + (product['quantity'] as int? ?? 0),
-    );
-  }
 
   String fixImageUrl(String url) {
     return url.replaceAll(
@@ -29,6 +24,8 @@ class SubCategoryList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final subCategoryController = Get.find<SubCategoryController>();
+
     return subCategories.isEmpty
         ? const Center(child: Text("No subcategories"))
         : SizedBox(
@@ -39,7 +36,7 @@ class SubCategoryList extends StatelessWidget {
               padding: EdgeInsets.zero,
               itemBuilder: (context, index) {
                 final subCat = subCategories[index];
-                final totalQty = getSubCategoryTotalQuantity(subCat);
+                final totalQty = subCategoryController.getSubCategoryTotalQuantity(subCat);
 
                 return Padding(
                   padding: EdgeInsets.only(
@@ -76,7 +73,7 @@ class SubCategoryList extends StatelessWidget {
                                 alignment: Alignment.center,
                                 child: ClipOval(
                                   child: Image.network(
-                                    fixImageUrl(subCat['image']),
+                                    fixImageUrl(subCat.image),
                                     width: 50,
                                     height: 50,
                                     fit: BoxFit.cover,
@@ -118,7 +115,7 @@ class SubCategoryList extends StatelessWidget {
                         SizedBox(
                           width: 70,
                           child: Text(
-                            subCat['name'] ?? '',
+                            subCat.name,
                             textAlign: TextAlign.center,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(fontSize: 12),
