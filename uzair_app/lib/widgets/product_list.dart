@@ -54,21 +54,18 @@ class ProductCard extends StatelessWidget {
         : product.price;
 
     return Container(
-      width: 180,
-      height: 150,
+      width: 190,
       margin: const EdgeInsets.only(right: 16.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(5),
-        border: Border.all(color: Colors.grey.shade300),
-      ),
+     
       child: Stack(
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+             
               Container(
-                height: 180,
+                width: double.infinity,
+                height: 210, 
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
                   color: Colors.grey[100],
@@ -77,7 +74,7 @@ class ProductCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(5),
                   child: product.image != null && product.image!.isNotEmpty
                       ? Image.network(
-                          fixImageUrl(product.image!), // <-- Fix image URL here
+                          fixImageUrl(product.image!),
                           fit: BoxFit.cover,
                           loadingBuilder: (context, child, loadingProgress) {
                             if (loadingProgress == null) return child;
@@ -96,39 +93,38 @@ class ProductCard extends StatelessWidget {
                       : const Icon(Icons.image, size: 50, color: Colors.grey),
                 ),
               ),
-              const SizedBox(height: 5),
+              const SizedBox(height: 8), 
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Text(
                   product.category.isNotEmpty ? product.category : "Category",
                   style: TextStyle(
                     fontFamily: "Montserrat",
-                    fontSize: 11,
+                    fontSize: 13,
                     color: Colors.grey[600],
                   ),
                 ),
               ),
+              const SizedBox(height: 2),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Row(
                   children: [
-                    if (product.discountPercentage != null &&
-                        product.discountPercentage! > 0)
-                      Text(
-                        "\$${product.price.toStringAsFixed(2)}",
-                        style: const TextStyle(
-                          fontFamily: "Montserrat",
-                          fontSize: 13,
-                          color: Colors.grey,
-                          decoration: TextDecoration.lineThrough,
-                        ),
+                    Text(
+                      "\$${product.price.toStringAsFixed(2)}",
+                      style: const TextStyle(
+                        fontFamily: "Montserrat",
+                        fontSize: 16,
+                        color: Colors.grey,
+                        decoration: TextDecoration.lineThrough,
                       ),
+                    ),
                     const SizedBox(width: 6),
                     Text(
                       "\$${discountedPrice.toStringAsFixed(2)}",
                       style: const TextStyle(
                         fontFamily: "Montserrat",
-                        fontSize: 13,
+                        fontSize: 16,
                         fontWeight: FontWeight.w700,
                         color: Colors.red,
                         letterSpacing: -0.21,
@@ -138,54 +134,57 @@ class ProductCard extends StatelessWidget {
                   ],
                 ),
               ),
-              const Spacer(),
+              const SizedBox(height: 8), 
               if (!product.status)
-                Container(
-                  width: 146,
-                  height: 16.84,
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 20,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.yellow,
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  alignment: Alignment.center,
+                Center(
                   child: Container(
-                    width: 123,
-                    height: 16.84,
-                    margin: const EdgeInsets.all(2),
+                    width: double.infinity,
+                    height: 18,
+                    margin: const EdgeInsets.symmetric(
+                      horizontal:5,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
-                      color: Colors.amber,
+                      color: Colors.yellow,
                       borderRadius: BorderRadius.circular(50),
                     ),
                     alignment: Alignment.center,
-                    child: const Text(
-                      "sold out",
-                      style: TextStyle(
-                        fontFamily: "Montserrat",
-                        fontSize: 8,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.red,
+                    child: Container(
+                      width: 150,
+                      height: 20,
+                      margin: const EdgeInsets.all(2),
+                      decoration: BoxDecoration(
+                        color: Colors.amber,
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      alignment: Alignment.center,
+                      child: const Text(
+                        "sold out",
+                        style: TextStyle(
+                          fontFamily: "Montserrat",
+                          fontSize: 10,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.red,
+                        ),
                       ),
                     ),
                   ),
                 ),
+              
             ],
           ),
           if (product.discountPercentage != null &&
               product.discountPercentage! > 0)
             Positioned(
-              top: 10,
-              left: 11,
+              top: 7,
+              left: 5,
               child: Container(
                 width: 50,
                 height: 20,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   color: Colors.green,
-                  borderRadius: BorderRadius.circular(4),
+                  borderRadius: BorderRadius.circular(2),
                 ),
                 child: Text(
                   "-${product.discountPercentage!.toStringAsFixed(2)}%",
@@ -202,9 +201,7 @@ class ProductCard extends StatelessWidget {
       ),
     );
   }
-}
-
-class ProductList extends StatelessWidget {
+}class ProductList extends StatelessWidget {
   final String selectedSubCategory;
   final List<Product> products;
 
@@ -235,7 +232,7 @@ class ProductList extends StatelessWidget {
                 TextSpan(
                   text: "($selectedSubCategory)",
                   style: const TextStyle(
-                    fontSize: 16,
+                    fontSize: 10,
                     fontWeight: FontWeight.w600,
                     color: Colors.red,
                   ),
@@ -245,7 +242,7 @@ class ProductList extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: 300,
+          height: 320,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             padding: EdgeInsets.zero,

@@ -234,17 +234,17 @@ class HomePage extends StatelessWidget {
                                       bottom: 20,
                                     ),
                                     width: double.infinity,
-                                    height: 80,
+                                    height: 90,
                                     decoration: BoxDecoration(
                                       color: Colors.cyan,
                                       borderRadius: BorderRadius.circular(7),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black.withOpacity(0.2),
-                                          blurRadius: 6,
-                                          offset: const Offset(0, 3),
-                                        ),
-                                      ],
+                                      // // boxShadow: [
+                                      // //   BoxShadow(
+                                      // //     color: Colors.black.withOpacity(0.2),
+                                      // //     blurRadius: 6,
+                                      // //     offset: const Offset(0, 3),
+                                      // //   ),
+                                      // ],
                                     ),
                                     child: Row(
                                       mainAxisAlignment:
@@ -283,7 +283,7 @@ class HomePage extends StatelessWidget {
                                                 Text(
                                                   'Free Shipping Over \$0',
                                                   style: TextStyle(
-                                                    fontSize: 16,
+                                                    fontSize: 20,
                                                     fontWeight: FontWeight.bold,
                                                     color: Colors.white,
                                                   ),
@@ -291,7 +291,7 @@ class HomePage extends StatelessWidget {
                                                 Text(
                                                   'Free returns and exchange',
                                                   style: TextStyle(
-                                                    fontSize: 12,
+                                                    fontSize: 16,
                                                     color: Colors.white,
                                                   ),
                                                 ),

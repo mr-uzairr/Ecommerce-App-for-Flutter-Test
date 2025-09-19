@@ -100,5 +100,6 @@ flutter_native_splash:
   color: "#ffffff"
   image: assets/Logo.png
   branding: assets/PoweredbyTechnupur.png
+  branding_bottom_padding: 28
   android: true
   ios: true

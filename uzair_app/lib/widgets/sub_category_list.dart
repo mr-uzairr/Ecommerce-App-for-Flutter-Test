@@ -43,8 +43,8 @@ class SubCategoryList extends StatelessWidget {
 
                 return Padding(
                   padding: EdgeInsets.only(
-                    left: index == 0 ? 0.0 : 2.0,
-                    right: 2.0,
+                    left: index == 0 ? 0.0 : 3.0,
+                    right: 3.0,
                     top: 20.0,
                     bottom: 8.0,
                   ),
