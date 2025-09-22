@@ -20,9 +20,12 @@ class ProductController extends GetxController {
   }
 
   double getDiscountedPrice(Product product) {
-    if (product.discountPercentage != null && product.discountPercentage! > 0) {
-      return product.price * (1 - product.discountPercentage! / 100);
-    }
-    return product.price;
+  final discount = product.discountPercentage ?? 0;
+
+  if (discount > 0) {
+    return product.price * (1 - discount / 100);
   }
+
+  return product.price;
+}
 }

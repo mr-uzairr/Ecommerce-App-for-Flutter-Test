@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shimmer/shimmer.dart';
 import '../controllers/category_controller.dart';
 import '../controllers/sub_category_controller.dart';
 import '../controllers/product_controller.dart';
@@ -62,7 +63,7 @@ class HomePage extends StatelessWidget {
                   child: Transform.rotate(
                     angle: 0,
                     child: SvgPicture.asset(
-                      'assets/search.svg',
+                      'assets/svgs/search.svg',
                       width: 37,
                       height: 37,
                     ),
@@ -74,9 +75,56 @@ class HomePage extends StatelessWidget {
         ),
       ),
       body: Obx(() {
-        if (categoryController.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
+         if (categoryController.isLoading.value) {
+          return Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Container(
+                    width: 200.w,
+                    height: 30.h,
+                    color: Colors.white,
+                    margin: EdgeInsets.only(bottom: 16.h),
+                  ),
+                ),
+                Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Container(
+                    width: double.infinity,
+                    height: 50.h,
+                    color: Colors.white,
+                    margin: EdgeInsets.only(bottom: 16.h),
+                  ),
+                ),
+                Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Container(
+                    width: double.infinity,
+                    height: 240.h,
+                    color: Colors.white,
+                    margin: EdgeInsets.only(bottom: 16.h),
+                  ),
+                ),
+                Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Container(
+                    width: 320.w,
+                    height: 80.h,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          );
         }
+
 
         final categories = categoryController.categories;
         final selectedCategoryIndex =
@@ -235,7 +283,7 @@ class HomePage extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Column(
-                  children: [
+                  children: [        
                     Obx(
                       () => SubCategoryList(
                         key: ValueKey(
@@ -300,7 +348,7 @@ class HomePage extends StatelessWidget {
                                               10.r,
                                             ),
                                             child: Image.asset(
-                                              'assets/delivery.png',
+                                              'assets/images/delivery.png',
                                               fit: BoxFit.cover,
                                             ),
                                           ),

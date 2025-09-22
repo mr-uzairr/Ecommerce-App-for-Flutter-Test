@@ -39,6 +39,7 @@ dependencies:
   http: ^1.5.0
   flutter_svg: ^2.2.1
   flutter_screenutil: ^5.9.0
+  shimmer: ^2.0.0
 
 dev_dependencies:
   flutter_native_splash: ^2.3.10
@@ -65,7 +66,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-   - assets/delivery.png
+   - assets/images/delivery.png
    - assets/svgs/menu.svg
    - assets/svgs/search.svg
    - assets/svgs/call.svg
@@ -99,8 +100,8 @@ flutter:
   # see https://flutter.dev/to/font-from-package
 flutter_native_splash:
   color: "#ffffff"
-  image: assets/logo.png
-  branding: assets/poweredbytechnupur.png
+  image: assets/images/logo.png
+  branding: assets/images/poweredbytechnupur.png
   branding_bottom_padding: 35
   android: true
   ios: true

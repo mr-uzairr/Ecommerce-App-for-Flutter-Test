@@ -63,6 +63,7 @@ class ProductList extends StatelessWidget {
           height: 240.h,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
+            clipBehavior: Clip.none,
             itemCount: products.length,
             itemBuilder: (context, index) {
               return Container(
@@ -193,7 +194,7 @@ class ProductCard extends StatelessWidget {
                     ),
                     alignment: Alignment.center,
                     child: Container(
-                      width: 125.16.w,
+                      width: 115.16.w,
                       height: 12.64.h,
 
                       decoration: BoxDecoration(
@@ -228,15 +229,15 @@ class ProductCard extends StatelessWidget {
                 child: Transform.rotate(
                   angle: 0,
                   child: Container(
-                    width: 44.w,
-                    height: 18.h,
+                    width: 40.w,
+                    height: 15.h,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: const Color(0xFF28A745),
                       borderRadius: BorderRadius.circular(2.r),
                     ),
                     child: Text(
-                      "-${product.discountPercentage!.toStringAsFixed(2)}%",
+                      "-${(product.discountPercentage ?? 0).toStringAsFixed(2)}%",
                       style: TextStyle(
                         fontFamily: "Montserrat",
                         fontWeight: FontWeight.w500,
